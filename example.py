@@ -1,4 +1,4 @@
-from compute_engine.python_module import LCE
+from python_module import LCE
 from pathlib import Path
 import json
 
