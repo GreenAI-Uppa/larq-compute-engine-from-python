@@ -1,4 +1,4 @@
-# Binary model inference with Larq Compute Engine from python
+# Binary model inference with Larq Compute Engine from Python
 With this repostory, you can now use the [Larq](https://docs.larq.dev/larq/) inference engine, [Larq Compute Engine (LCE)](https://docs.larq.dev/compute-engine/) in a python script, to perform image inference with a Binary model on a 64 bit ARM system.
 
 LCE provides a collection of hand-optimized TensorFlow Lite custom operators for supported instruction sets, developed in C++ using compiler intrinsics. Using the LCE converter, the Binary model built with Larq is converted to tensorflow Lite to take into account these custom operators.
