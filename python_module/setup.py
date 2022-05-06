@@ -37,7 +37,7 @@ extra_objects = ['../third_party/tensorflow/tensorflow/lite/tools/make/gen/linux
 fib_module = Extension(
    '_LCE',
    include_dirs = INCLUDES,
-   library_dirs=['/usr/local/lib','../third_party/tensorflow/tensorflow/lite/tools/make/gen/linux_aarch64/lib/','/usr/local/cuda/lib64'],
+   library_dirs=['../third_party/tensorflow/tensorflow/lite/tools/make/gen/linux_aarch64/lib/'],
    libraries=libraries,
    extra_compile_args= args,
    language = "c++",

@@ -9,7 +9,7 @@ import sys
 import argparse
 
 """
-usage : $ python3   --tflite BinaryModel.tflite --source path/to/image or path/to/directoryImage \
+usage : $ python3 run.py --tflite BinaryModel.tflite --source path/to/image or path/to/directoryImage \
                     --classesNames  path/to/FileClasseName.txt --imgsz 224 --channels 3
 """
 
