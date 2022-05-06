@@ -58,6 +58,13 @@ From Jetson Nano
      ```
      $ python3 setup.py install
      ```
+If you're using another system such as a Raspberry, it is better to create another module rather than using the one provided in this repository.
+  
+In this case you'll need to run the following commands:
+   ```
+     $ swig -c++  -python lce.i
+     $ python3 setup.py  build_ext --inplace
+     ```
   The module is now ready to be used in a python script.
   
  ## USAGE
