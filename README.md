@@ -6,7 +6,7 @@ In order to take advantage of these optimizations, a C++ script, based on the TF
 
 To perform the inference from a Python script, we have created a Python module of the C++ script with the open source software [SWIG](https://www.swig.org/Doc1.3/Python.html). This module allows to call the C++ function that performs the inference as if it was a Python function.
 
-The different experiments have been done on a Jetson Nano ARM64. But you have the choice to use other devices with an ARM system like the Raspberry. However the conversion of the keras model built from Larq to Tensorflow tflite with the LCE converter can only be done on an x86 system.
+The different experiments have been done on a Jetson Nano ARM64. But you have the choice to use other devices with an ARM system like the Raspberry. However the conversion of the keras model built from Larq to Tensorflow tflite with the LCE converter can only be done on an x86 system ie you train the binary network and convert it to tflite on a x86 machine, and then you can use our script for fast inference of your model on our ARM device.
 
 See article [Binary Neural Network part 2](https://medium.com/@fkinesow/binary-neural-network-part-2-cecbe5761b78) for more information on the C++ script to perform the inference with the LCE.
 A comparison of the performance of Vanilla and Binary AlexNet is also presented in this article. 
@@ -45,16 +45,16 @@ From Jetson Nano
   * Intall OpenCV for input image processing 
   
     As the Larq compute engine C++ API is used to perform the inference on the Jetson, it will be necessary to install OpenCV C++.
-    See [this article](https://medium.com/@pokhrelsuruchi/setting-up-opencv-for-python-and-c-in-ubuntu-20-04-6b0331e37437) for installaing OpenCV C++ on linux system.
+    See [this article](https://medium.com/@pokhrelsuruchi/setting-up-opencv-for-python-and-c-in-ubuntu-20-04-6b0331e37437) for installing OpenCV C++ on linux system or [this article](https://automaticaddison.com/how-to-install-opencv-4-5-on-nvidia-jetson-nano/) for installation on Nvidia Jetson Nano
   * Go into directory python_module and open setup.py file 
     ```
     $ cd larq-compute-engine-from-python/python_module
     ```
   * Add the path to the opencv installation directory in the INCLUDE variable
     
-    Change ```/usr/local/include/opencv4``` to ```path/to/opencv/directory```
+    In `setupp.py`change ```/usr/local/include/opencv4``` to ```path/to/your_opencv/directory```
     
-  * Intall the LCE module with setup.py file
+  * Intall the LCE module with the setup.py file
      ```
      $ python3 setup.py install
      ```
@@ -64,7 +64,7 @@ From Jetson Nano
  ### Convert keras model to tflite model
  Convert the binary model (download from Larq zoo or create with Larq) using the Larq Compute Engine module from your x86 source machine. See `convert_bnn_model.py`.
 
- Next, import tflite model into device (Jetson).
+ Next, move the tflite model to the arm device and proceed with the inference.
  
  ### Run inference from ARM system
  Once the model is converted and imported on the device where the module is installed, you can perform the inference of this model from a python script.
@@ -72,10 +72,10 @@ From Jetson Nano
  The `run.py` file gives an example to use the module. 
  
  Different parameters are required to run this script:
- * `--tflite` : path of the tflite model. Default value `BinaryAlexNet.tflite` the binary model of AlexNet pre-trained on ImageNet data. This model was downloaded from Larq zoo and converted to tflite with the LCE converter. (See `convert_bnn_model.py` file)
+ * `--tflite` : path of the tflite model. Default value is BinaryAlexNet.tflite : a binary AlexNet pre-trained on ImageNet data. This model was downloaded from Larq zoo and converted to tflite with the LCE converter. (See `convert_bnn_model.py` file)
  * `--source` : path of image or directory of images to predict
  * `--classesNames` : path of the text file that contains the class names (must have the same structure as ìmagenet_label.txt` file)
- * `--imgsz` : inference size h,w.  Default value 224
+ * `--imgsz` : input size h,w of your model. Default value 224 for AlexNet
  * `--channels`: number of image channels.  Default value  3
 
 Example of using run.py:
@@ -97,5 +97,3 @@ Example: For the prediction of an image, we have the following result
       Image                                ClassName  Confidence Inference time
    test.jpg  ballpoint, ballpoint pen, ballpen, Biro    0.013324             88
 ```
-
-You have the possibility to add the real class of the image to evaluate the model.
