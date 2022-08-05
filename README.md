@@ -1,4 +1,4 @@
-# Binary model inference with Larq Compute Engine from Python
+# Binary model inference with Larq Compute Engine from Python for Raspberry Model 4
 With this repository, you can now use the [Larq](https://docs.larq.dev/larq/) inference engine, [Larq Compute Engine (LCE)](https://docs.larq.dev/compute-engine/) in a python script, to perform image inference with a Binary model on a 64 bit ARM system.
 
 LCE provides a collection of hand-optimized TensorFlow Lite custom operators for supported instruction sets, developed in C++ using compiler intrinsics. Using the LCE converter, the Binary model built with Larq is converted to tensorflow Lite to take into account these custom operators.
@@ -6,7 +6,7 @@ In order to take advantage of these optimizations, a C++ script, based on the TF
 
 To perform the inference from a Python script, we have created a Python module of the C++ script with the open source software [SWIG](https://www.swig.org/Doc1.3/Python.html). This module allows to call the C++ function that performs the inference as if it was a Python function.
 
-The different experiments have been done on a Jetson Nano ARM64. But you have the choice to use other devices with an ARM system like the Raspberry. However the conversion of the keras model built from Larq to Tensorflow tflite with the LCE converter can only be done on an x86 system ie you train the binary network and convert it to tflite on a x86 machine, and then you can use our script for fast inference of your model on our ARM device.
+You have the choice to use many devices with an ARM system like the Raspberry. However the conversion of the keras model built from Larq to Tensorflow tflite with the LCE converter can only be done on an x86 system ie you train the binary network and convert it to tflite on a x86 machine, and then you can use our script for fast inference of your model on our ARM device.
 
 See article [Binary Neural Network part 2](https://medium.com/@fkinesow/binary-neural-network-part-2-cecbe5761b78) for more information on the C++ script to perform the inference with the LCE.
 A comparison of the performance of Vanilla and Binary AlexNet is also presented in this article. 
@@ -18,7 +18,7 @@ From x86 host machine
 * Tensorflow version 1.14, 1.15, 2.0, 2.1, 2.2, 2.3, 2.4 or 2.5 (recommended):
 
 ### To perform inference on an ARM system  
-From Jetson Nano
+From Raspberry (Debian GNU/Linux 11 (bullseye))
 * Python version 3.6, 3.7, 3.8, or 3.9
 * C++ compiler 
 * swig (install with ```sudo apt install swig``` on linux system)
@@ -44,8 +44,17 @@ From Jetson Nano
    ```
   * Intall OpenCV for input image processing 
   
-    As the Larq compute engine C++ API is used to perform the inference on the Jetson, it will be necessary to install OpenCV C++.
-    See [this article](https://medium.com/@pokhrelsuruchi/setting-up-opencv-for-python-and-c-in-ubuntu-20-04-6b0331e37437) for installing OpenCV C++ on linux system or [this article](https://automaticaddison.com/how-to-install-opencv-4-5-on-nvidia-jetson-nano/) for installation on Nvidia Jetson Nano
+    As the Larq compute engine C++ API is used to perform the inference on the Jetson or Raspberry, it will be necessary to install OpenCV C++.
+    See [this article](https://medium.com/@pokhrelsuruchi/setting-up-opencv-for-python-and-c-in-ubuntu-20-04-6b0331e37437) for installing OpenCV C++ on linux system, [this article](https://automaticaddison.com/how-to-install-opencv-4-5-on-nvidia-jetson-nano/) for installation on Nvidia Jetson Nano and [this article](https://linuxize.com/post/how-to-install-opencv-on-raspberry-pi/) (Install OpenCV from Source) for intallation on Raspberry.
+  * Install cmake on Debian based systems like a Raspberry Pi board with Raspberry Pi OS
+    ```
+    sudo apt-get install cmake build-essential 
+    ```
+  * Go into directory larq-compute-engine-from-python and run the following commands to natively compile LCE :
+    ```
+    cmake -S . -B build
+    cmake --build build
+    ```
   * Go into directory python_module and open setup.py file 
     ```
     $ cd larq-compute-engine-from-python/python_module
